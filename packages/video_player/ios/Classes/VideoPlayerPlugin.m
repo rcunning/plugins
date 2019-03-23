@@ -259,16 +259,15 @@ static void* playbackBufferFullContext = &playbackBufferFullContext;
         //_isInitialized = true; // ref https://github.com/flutter/plugins/pull/1211/files
         [item addOutput:_videoOutput];
         //[self sendInitialized]; // ref https://github.com/flutter/plugins/pull/1211/files
+        if (!_isInitialized) {
+          _isInitialized = true;
+          [self sendInitialized];
+        }
         [self updatePlayingState];
         break;
     }
   } else if (context == playbackLikelyToKeepUpContext) {
     if ([[_player currentItem] isPlaybackLikelyToKeepUp]) {
-      // ref https://github.com/flutter/plugins/pull/1211/files
-      if (!_isInitialized) {
-        _isInitialized = true;
-        [self sendInitialized];
-      }
       [self updatePlayingState];
       if (_eventSink != nil) {
         _eventSink(@{@"event" : @"bufferingEnd"});
